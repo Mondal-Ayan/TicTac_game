@@ -1,261 +1,54 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tic Tac Toe</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <style>
-    * {
-      padding: 0;
-      margin: 0;
-      box-sizing: border-box;
-    }
-    body {
-      background-color: #19375b;
-      min-height: 100vh;
-      font-family: Arial, Helvetica, sans-serif;
-      font-size: 1.5rem;
-      color: #a7bfdc;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .container {
-      width: 90%;
-      max-width: 600px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
-      gap: 20px;
-    }
-    .tools, .stats {
-      width: 100%;
-      height: 80px;
-      display: flex;
-      align-items: center;
-      justify-content: space-evenly;
-      border-radius: 20px;
-      background: linear-gradient(#061423, #0d1f32);
-    }
-    .symbols i:nth-child(odd) {
-      color: #febf14;
-    }
-    .reset {
-      cursor: pointer;
-    }
-    .cells {
-      display: flex;
-    }
-    .cell {
-      width: 80px;
-      height: 80px;
-      background-color: #0d1f32;
-      margin: 5px;
-      border-radius: 15px;
-      box-shadow: 0 5px 0 rgba(0,0,0,0.5);
-      cursor: pointer;
-      color: #a7bfdc;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-size: 2.5em;
-    }
-    .player, .draws {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-    }
-    label {
-      font-weight: 700;
-      font-size: 0.7em;
-    }
-    .stats span {
-      color: #febf14;
-    }
-    #overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0,0,0,0.5);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      z-index: 1;
-    }
-    #message {
-      background-color: #061423;
-      padding: 30px 20px;
-      border-radius: 20px;
-      text-align: center;
-      box-shadow: 0 10px 20px #000;
-      position: relative;
-      width: 80%;
-      max-width: 400px;
-    }
-    #close {
-      position: absolute;
-      top: 10px;
-      right: 15px;
-      cursor: pointer;
-      font-size: 1.5rem;
-      color: #febf14;
-    }
-    #message h2 {
-      color: #febf14;
-      margin-top: 10px;
-    }
-    .content {
-      color: #a7bfdc;
-      font-size: 1.2em;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tic Tac Toe</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="game.js" defer></script>
 </head>
-
 <body>
-  <div id="overlay">
-    <div id="message">
-      <div id="close">
-        <i class="fa fa-close"></i>
-      </div>
-      <div class="content">
-        X is the <h2>Winner</h2>
-      </div>
-    </div>
-  </div>
+    <header>
+        <h1>Tic Tac Toe</h1>
+    </header>
 
-  <div class="container">
-    <div class="tools">
-      <div class="symbols">
-        <i class="fa fa-close"></i>
-        <i class="fa fa-circle-o"></i>
-      </div>
-      <div class="turn">
-        <span class="current-turn">X</span> turn
-      </div>
-      <div class="reset">
-        <i class="fa fa-rotate-right"></i>
-      </div>
-    </div>
+    <main>
+        <p>Turn</p>
+        <div class="gameboard">
+            <div class="gamecell" data-position="0"></div>
+            <div class="gamecell" data-position="1"></div>
+            <div class="gamecell" data-position="2"></div>
+            <div class="gamecell" data-position="3"></div>
+            <div class="gamecell" data-position="4"></div>
+            <div class="gamecell" data-position="5"></div>
+            <div class="gamecell" data-position="6"></div>
+            <div class="gamecell" data-position="7"></div>
+            <div class="gamecell" data-position="8"></div>
+        </div>
+        <button type="button">Reset</button>
+    </main>
 
-    <div class="board">
-      <div class="cells">
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-      </div>
-      <div class="cells">
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-      </div>
-      <div class="cells">
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-      </div>
-    </div>
+    <dialog class="names-dialog">
+        <form>
+            <p class="title">Let's start the game!</p>
+            <p  class="player-name">
+                <label for="name1">Player 1's Name:</label>
+                <input type="text" name="name1" id="name1" maxlength="15" required>
+            </p>
+            <p  class="player-name">
+                <label for="name2">Player 2's Name:</label>
+                <input type="text" name="name2" id="name2" maxlength="15" required>
+            </p>
+            <button>Confirm</button>
+        </form>
+    </dialog>
 
-    <div class="stats">
-      <div class="player">
-        <label>Player 1</label>
-        <span class="score1">0</span>
-      </div>
-      <div class="draws">
-        <label>Draws</label>
-        <span class="draw">0</span>
-      </div>
-      <div class="player">
-        <label>Player 2</label>
-        <span class="score2">0</span>
-      </div>
-    </div>
-  </div>
+    <dialog class="result-dialog">
+        <h1>Player X Wins!</h1>
+    </dialog>
 
-<script>
-const cells = document.querySelectorAll('.cell');
-const turnSpan = document.querySelector('.current-turn');
-const resetBtn = document.querySelector('.reset');
-const overlay = document.getElementById('overlay');
-const message = document.querySelector('.content');
-const closeBtn = document.getElementById('close');
-const score1 = document.querySelector('.score1');
-const score2 = document.querySelector('.score2');
-const drawScore = document.querySelector('.draw');
-
-let currentPlayer = 'X';
-let board = ['', '', '', '', '', '', '', '', ''];
-let gameOver = false;
-
-const winPatterns = [
-  [0,1,2], [3,4,5], [6,7,8],
-  [0,3,6], [1,4,7], [2,5,8],
-  [0,4,8], [2,4,6]
-];
-
-function checkWinner() {
-  for (let pattern of winPatterns) {
-    const [a, b, c] = pattern;
-    if (board[a] && board[a] === board[b] && board[a] === board[c]) {
-      return board[a];
-    }
-  }
-  if (!board.includes('')) {
-    return 'Draw';
-  }
-  return null;
-}
-
-function showResult(result) {
-  overlay.style.display = 'flex';
-  if (result === 'Draw') {
-    message.innerHTML = `<h2>It's a Draw!</h2>`;
-    drawScore.textContent = parseInt(drawScore.textContent) + 1;
-  } else {
-    message.innerHTML = `${result} is the <h2>Winner</h2>`;
-    if (result === 'X') {
-      score1.textContent = parseInt(score1.textContent) + 1;
-    } else {
-      score2.textContent = parseInt(score2.textContent) + 1;
-    }
-  }
-}
-
-function resetBoard() {
-  board = ['', '', '', '', '', '', '', '', ''];
-  cells.forEach(cell => {
-    cell.textContent = '';
-  });
-  currentPlayer = 'X';
-  turnSpan.textContent = currentPlayer;
-  gameOver = false;
-  overlay.style.display = 'none';
-}
-
-cells.forEach((cell, index) => {
-  cell.addEventListener('click', () => {
-    if (board[index] === '' && !gameOver) {
-      board[index] = currentPlayer;
-      cell.textContent = currentPlayer;
-      const result = checkWinner();
-      if (result) {
-        gameOver = true;
-        showResult(result);
-      } else {
-        currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
-        turnSpan.textContent = currentPlayer;
-      }
-    }
-  });
-});
-
-resetBtn.addEventListener('click', resetBoard);
-closeBtn.addEventListener('click', resetBoard);
-</script>
-
+    <footer>
+        <p>Made by Marc Frances</p>
+    </footer>
 </body>
 </html>
